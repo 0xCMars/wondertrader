@@ -575,7 +575,7 @@ WtDataReaderAD::WtLMDBPtr WtDataReaderAD::get_k_db(const char* exchg, WTSKlinePe
 
 	auto it = the_map->find(exchg);
 	if (it != the_map->end())
-		return std::move(it->second);
+		return it->second;
 
 	WtLMDBPtr dbPtr(new WtLMDB(true));
 	std::string path = fmtutil::format("{}{}/{}/", _base_dir.c_str(), subdir.c_str(), exchg);

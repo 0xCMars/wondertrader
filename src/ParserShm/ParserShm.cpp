@@ -109,6 +109,9 @@ bool ParserShm::connect()
 		_queue = (CastQueue*)_mapfile->addr();
 		uint32_t cast_pid = _queue->_pid;
 
+		size_t shm_size = _mapfile->size();  // 获取映射文件大小
+		write_log(_sink, LL_INFO, "[ParserShm] mapped file: {}, size: {}", _path, shm_size);
+
 		if (_sink)
 		{
 			_sink->handleEvent(WPE_Connect, 0);
@@ -149,7 +152,16 @@ bool ParserShm::connect()
 					std::this_thread::sleep_for(std::chrono::microseconds(_check_span));
 				continue;
 			}
-			else if (lastIdx == NODATA_FLAG)	//之前没数据的时候检查了一次，现在有数据了，从0开始读取
+			if (_queue->_readable > lastIdx + 65536)
+			{
+				write_log(_sink, LL_ERROR, 
+					"[ParserShm] Queue overrun! Data lost. readable={}, lastIdx={}, capacity={}", 
+					_queue->_readable, lastIdx, 65536);
+
+				lastIdx = _queue->_readable;
+				continue;
+			}
+			if (lastIdx == NODATA_FLAG)	//之前没数据的时候检查了一次，现在有数据了，从0开始读取
 			{
 				lastIdx = 0;
 			}

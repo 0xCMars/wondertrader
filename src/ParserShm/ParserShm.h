@@ -52,7 +52,7 @@ public:
 		_DataQueue() :_readable(UINT64_MAX), _writable(0), _pid(0) {}
 	};
 
-	typedef _DataQueue<8 * 1024>	CastQueue;
+	typedef _DataQueue<65536>	CastQueue;
 
 #pragma pack(pop)
 

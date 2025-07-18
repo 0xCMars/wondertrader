@@ -54,7 +54,7 @@ public:
 		return _dbi;
 	}
 
-	bool open(const char* path, std::size_t mapsize = 16*1024*1024)
+	bool open(const char* path, std::size_t mapsize = 20ULL * 1024 * 1024 * 1024)
 	{
 #if _MSC_VER
         int ret = _access(path, 0);

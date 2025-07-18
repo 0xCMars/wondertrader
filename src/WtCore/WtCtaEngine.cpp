@@ -641,6 +641,7 @@ void WtCtaEngine::on_bar(const char* stdCode, const char* period, uint32_t times
 		if(cit != _ctx_map.end())
 		{
 			CtaContextPtr& ctx = (CtaContextPtr&)cit->second;
+			WTSLogger::info("stdCode:{}, period:{} times:{}", stdCode, period, times);
 			if (_pool)
 			{
 				_pool->schedule([ctx, stdCode, period, times, newBar]() {
