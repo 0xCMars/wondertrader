@@ -6,7 +6,7 @@ fi
 echo "wtpy path is $despath"
 
 root="./src/build_all/build_x64/Release/bin"
-folders=("Loader" "WtBtPorter" "WtDtPorter" "WtPorter")
+folders=("Loader" "WtBtPorter" "WtDtPorter" "WtPorter", "")
 for folder in ${folders[@]}
 do
 	cp -rvf $root/$folder/*.so $despath/wtpy/wrapper/linux
