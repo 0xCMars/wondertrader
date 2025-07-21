@@ -10,6 +10,7 @@
 #include "WtDtMgr.h"
 #include "WtEngine.h"
 #include "WtHelper.h"
+#include "EventNotifier.h"
 
 #include "../Share/StrUtil.hpp"
 #include "../Share/CodeHelper.hpp"
