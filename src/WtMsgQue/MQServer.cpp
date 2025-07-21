@@ -180,6 +180,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 				std::size_t total_len = 0;
 				for (const PubData& pubData : tmpQue)
 				{
+					std::cout << "send when full" << std::endl;
 					std::size_t len = sizeof(MQPacket) + pubData._data.size();
 
 					//如果数据包缓存满了，则先发送一次
@@ -219,6 +220,8 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 
 				if(total_len > 0)
 				{
+					std::cout << "send not full" << std::endl;
+
 					int bytes_snd = 0;
 					for (;;)
 					{
