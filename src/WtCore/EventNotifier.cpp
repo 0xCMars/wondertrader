@@ -14,6 +14,7 @@
 #include "../Share/DLLHelper.hpp"
 
 #include "../Includes/WTSTradeDef.hpp"
+#include "../Includes/WTSDataDef.hpp"
 #include "../Includes/WTSCollection.hpp"
 #include "../Includes/WTSVariant.hpp"
 
