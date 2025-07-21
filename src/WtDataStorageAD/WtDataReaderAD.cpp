@@ -445,7 +445,7 @@ WTSKlineSlice* WtDataReaderAD::readKlineSlice(const char* stdCode, WTSKlinePerio
 		//从lmdb读完了以后，再检查
 		//如果时间戳仍然小于截止时间
 		//则从缓存中读取
-		pipe_reader_log(_sink, LL_DEBUG, "test - 2")
+		pipe_reader_log(_sink, LL_DEBUG, "test - 2");
 
 		if(lastBarTime < etime)
 		{
