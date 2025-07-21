@@ -117,7 +117,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
-	std::cout << "MQServer publish " << topic << std::endl;
+	std::cout << "MQServer publish " << data << std::endl;
 
 	if(_sock < 0)
 	{
