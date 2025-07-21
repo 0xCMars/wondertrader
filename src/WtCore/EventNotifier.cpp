@@ -423,12 +423,12 @@ void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick)
 	if (newTick == NULL || _mq_sid == 0)
 		return;
 	WTSLogger::debug("notify_tick");
-	WTSTickData* tick = WTSTickData::create(newTick);
+	WTSTickData* tick = WTSTickData::create(*newTick);
 	std::string strCode = stdCode;
 	tick->retain();
 	_asyncio.post([this, strCode, tick]() {
 		std::string data;
-		tickToJson(strCode.c_str(), newTick, data);
+		tickToJson(strCode.c_str(), tick, data);
 		if (_publisher) {
 			WTSLogger::debug("notify_tick {} data:{}", _mq_sid, data);
 			_publisher(_mq_sid, "TRD_MARKET", data.c_str(), (unsigned long)data.size());
