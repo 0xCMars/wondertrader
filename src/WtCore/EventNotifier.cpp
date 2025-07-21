@@ -429,7 +429,7 @@ void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick)
 		std::string data;
 		tickToJson(strCode.c_str(), newTick, data);
 		if (_publisher)
-			_publisher(_mq_sid, "TRD_TICK", data.c_str(), (unsigned long)data.size());
+			_publisher(_mq_sid, "TRD_MARKET", data.c_str(), (unsigned long)data.size());
 		newTick->release();
 	});
 }
