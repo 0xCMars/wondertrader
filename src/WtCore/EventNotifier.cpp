@@ -423,7 +423,7 @@ void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick)
 	if (newTick == NULL || _mq_sid == 0)
 		return;
 	WTSLogger::debug("notify_tick");
-	WTSTickData* tick = WTSTickData::create(newTick->_data);
+	WTSTickData* tick = WTSTickData::create(newTick->getTickStruct());
 	std::string strCode = stdCode;
 	tick->retain();
 	_asyncio.post([this, strCode, tick]() {
