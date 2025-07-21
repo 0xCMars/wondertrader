@@ -420,8 +420,8 @@ bool WtRunner::initDataMgr()
 		return false;
 
 	_data_mgr.init(cfg, _engine);
+	_data_mgr.init_evt_notifier(_notifier);
 	WTSLogger::info("Data manager initialized");
-
 	return true;
 }
 

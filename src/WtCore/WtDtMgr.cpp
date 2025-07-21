@@ -31,6 +31,7 @@ WtDtMgr::WtDtMgr()
 	, _ticks_adjusted(NULL)
 	, _rt_tick_map(NULL)
 	, _force_cache(false)
+	, _notifier(NULL)
 {
 }
 
@@ -99,6 +100,16 @@ bool WtDtMgr::init(WTSVariant* cfg, WtEngine* engine, bool bForceCache /* = fals
 	WTSLogger::info("Force to cache bars: {}", _force_cache ? "yes" : " no");
 
 	return initStore(cfg->get("store"));
+}
+
+bool WtDtMgr::init_evt_notifier(EventNotifier* caster) {
+	if (caster == NULL) {
+		WTSLogger::debug("Caster is NULL.");
+		return false;
+	}
+	_notifier = caster;
+	WTSLogger::info("WtDtMgr init event notifier.");
+	return true;
 }
 
 void WtDtMgr::on_all_bar_updated(uint32_t updateTime)
@@ -226,6 +237,10 @@ void WtDtMgr::handle_push_quote(const char* stdCode, WTSTickData* newTick)
 
 	_rt_tick_map->add(stdCode, newTick, true);
 
+	if (_notifier != NULL) {
+		_notifier->notify_tick(stdCode, newTick);
+	}
+
 	if(_ticks_adjusted != NULL)
 	{
 		WTSHisTickData* tData = (WTSHisTickData*)_ticks_adjusted->get(stdCode);
@@ -237,6 +252,7 @@ void WtDtMgr::handle_push_quote(const char* stdCode, WTSTickData* newTick)
 
 		tData->appendTick(newTick->getTickStruct());
 	}
+
 }
 
 WTSTickData* WtDtMgr::grab_last_tick(const char* code)

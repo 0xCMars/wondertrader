@@ -54,6 +54,8 @@ public:
 	void	notify_chart_index(uint64_t time, const char* straId, const char* idxName, const char* lineName, double val);
 	void	notify_trade(const char* straId, const char* stdCode, bool isLong, bool isOpen, uint64_t curTime, double price, const char* userTag);
 
+	void	notify_tick(const char* stdCode, WTSTickData* newTick);
+	
 private:
 	std::string		_url;
 	uint32_t		_mq_sid;

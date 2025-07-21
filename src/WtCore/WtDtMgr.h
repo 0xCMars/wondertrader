@@ -23,6 +23,7 @@ class WTSTickSlice;
 class IBaseDataMgr;
 class IBaseDataMgr;
 class WtEngine;
+class EventNotifier;
 
 class WtDtMgr : public IDataReaderSink, public IDataManager
 {
@@ -35,7 +36,8 @@ private:
 
 public:
 	bool	init(WTSVariant* cfg, WtEngine* engine, bool bForceCache = false);
-
+	bool	init_evt_notifier(EventNotifier* caster = NULL);
+	
 	void	regsiter_loader(IHisDataLoader* loader) { _loader = loader; }
 
 	void	handle_push_quote(const char* stdCode, WTSTickData* newTick);
@@ -101,6 +103,9 @@ private:
 	} NotifyItem;
 
 	std::vector<NotifyItem> _bar_notifies;
+
+	EventNotifier*		_notifier;
+
 };
 
 NS_WTP_END

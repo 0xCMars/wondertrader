@@ -222,8 +222,6 @@ void EventNotifier::notify(const char* trader, uint32_t localid, const char* std
 		if (_publisher)
 			_publisher(_mq_sid, "TRD_ORDER", data.c_str(), (unsigned long)data.size());
 	});
-
-	
 }
 
 void EventNotifier::tradeToJson(const char* trader, uint32_t localid, const char* stdCode, WTSTradeInfo* trdInfo, std::string& output)
@@ -292,6 +290,30 @@ void EventNotifier::orderToJson(const char* trader, uint32_t localid, const char
 		root.AddMember("traded", ordInfo->getVolTraded(), allocator);
 		root.AddMember("price", ordInfo->getPrice(), allocator);
 		root.AddMember("state", rj::Value(ordInfo->getStateMsg(), allocator), allocator);
+
+		rj::StringBuffer sb;
+		rj::PrettyWriter<rj::StringBuffer> writer(sb);
+		root.Accept(writer);
+
+		output = sb.GetString();
+	}
+}
+
+void EventNotifier::tickToJson(const char* stdCode, WTSTickData* newTick, std::string& output) {
+	if(newTick == NULL)
+	{
+		output = "{}";
+		return;
+	}
+
+	{
+		rj::Document root(rj::kObjectType);
+		rj::Document::AllocatorType &allocator = root.GetAllocator();
+
+		root.AddMember("trader", rj::Value(trader, allocator), allocator);
+		root.AddMember("time", newTick->actiontime(), allocator);
+		root.AddMember("code", rj::Value(stdCode, allocator), allocator);
+		root.AddMember("price", newTick->price(), allocator);
 
 		rj::StringBuffer sb;
 		rj::PrettyWriter<rj::StringBuffer> writer(sb);
@@ -393,5 +415,21 @@ void EventNotifier::notify_trade(const char* straId, const char* stdCode, bool i
 		}
 		if (_publisher)
 			_publisher(_mq_sid, "STRA_TRADE", data.c_str(), (unsigned long)data.size());
+	});
+}
+
+void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick) 
+{
+	if (newTick == NULL || _mq_sid == 0)
+		return;
+
+	std::string strCode = stdCode;
+	newTick->retain();
+	_asyncio.post([this, strCode, newTick]() {
+		std::string data;
+		tickToJson(strCode.c_str(), newTick, data);
+		if (_publisher)
+			_publisher(_mq_sid, "TRD_TICK", data.c_str(), (unsigned long)data.size());
+		newTick->release();
 	});
 }

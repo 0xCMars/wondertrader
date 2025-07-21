@@ -273,8 +273,11 @@ void WtDataReaderAD::update_cache_from_lmdb(BarsList& barsList, const char* exch
 	WtLMDBQuery query(*db);
 	LMDBBarKey lKey(exchg, code, lastBarTime);
 	LMDBBarKey rKey(exchg, code, 0xFFFFFFFF);
-	int cnt = query.get_uppers(std::string((const char*)&lKey, sizeof(lKey)), std::string((const char*)&rKey, sizeof(rKey)), 
-		9999, [this, &barsList, isDay, &lastBarTime](const ValueArray& ayKeys, const ValueArray& ayVals) {
+	int cnt = query.get_uppers(
+		std::string((const char*)&lKey, sizeof(lKey)), 
+		std::string((const char*)&rKey, sizeof(rKey)), 
+		9999, 
+		[this, &barsList, isDay, &lastBarTime](const ValueArray& ayKeys, const ValueArray& ayVals) {
 
 		std::size_t cnt = ayVals.size();
 		for (std::size_t idx = 0; idx < cnt; idx++)
@@ -433,14 +436,17 @@ WTSKlineSlice* WtDataReaderAD::readKlineSlice(const char* stdCode, WTSKlinePerio
 		{
 			//如果最后一条K线的时间小于当前时间，先从数LMDB更新最新的K线
 			update_cache_from_lmdb(barsList, cInfo._exchg, curCode.c_str(), period, lastBarTime);
-
+			pipe_reader_log(_sink, LL_DEBUG, "test - 1");
 			lastBar = barsList._bars.back();
+			pipe_reader_log(_sink, LL_DEBUG, "test - 2");
 			lastBarTime = isDay ? lastBar.date : (uint32_t)lastBar.time;
 		}
 
 		//从lmdb读完了以后，再检查
 		//如果时间戳仍然小于截止时间
 		//则从缓存中读取
+		pipe_reader_log(_sink, LL_DEBUG, "test - 2")
+
 		if(lastBarTime < etime)
 		{
 			WTSBarStruct* rtBar = get_rt_cache_bar(cInfo._exchg, curCode.c_str(), period);
