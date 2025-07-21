@@ -13,7 +13,6 @@
 #include "../Share/StrUtil.hpp"
 #include "../Share/TimeUtils.hpp"
 #include "../Share/fmtlib.h"
-#include "../WTSTools/WTSLogger.h"
 
 #include <atomic>
 
@@ -99,8 +98,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 	}
 	else
 	{
-		WTSLogger::debug("MQServer {} has binded to {} ", _id, url);
-
+		std::cout << "MQServer " << _id << " has binded to " << url << std::endl;
 		_mgr->log_server(_id, fmtutil::format("MQServer {} has binded to {} ", _id, url));
 	}
 
@@ -111,7 +109,8 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
-	WTSLogger::debug("MQServer publish has binded to {} ", topic);
+	std::cout << "MQServer publish " << topic << std::endl;
+
 	if(_sock < 0)
 	{
 		_mgr->log_server(_id, fmtutil::format("MQServer {} has not been initialized yet", _id));
@@ -127,7 +126,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
 	}
-	WTSLogger::debug("MQServer {} emplace one elem", _id);
+	std::cout << "MQServer emplace one elem" << std::endl;
 
 	if(m_thrdCast == NULL)
 	{

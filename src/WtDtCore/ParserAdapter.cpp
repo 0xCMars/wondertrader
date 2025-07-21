@@ -304,7 +304,7 @@ void ParserAdapter::handleQuote( WTSTickData *quote, uint32_t procFlag )
 	if (!_dt_mgr->writeTick(quote, procFlag))
 		return;
 	
-	WTSLogger::debug("WtDtCore:ParserAdapter::handleQuote end.");
+	// WTSLogger::debug("WtDtCore:ParserAdapter::handleQuote end.");
 
 	if (_idx_fact)
 		_idx_fact->handle_quote(quote);
