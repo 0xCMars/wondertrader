@@ -123,6 +123,8 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
 	}
+	_mgr->log_server(_id, fmtutil::format("MQServer {} emplace one elem", _id));
+
 
 	if(m_thrdCast == NULL)
 	{

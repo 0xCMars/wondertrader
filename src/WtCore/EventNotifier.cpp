@@ -428,8 +428,11 @@ void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick)
 	_asyncio.post([this, strCode, newTick]() {
 		std::string data;
 		tickToJson(strCode.c_str(), newTick, data);
-		if (_publisher)
+		WTSLogger::debug("notify_tick");
+		if (_publisher) {
+			WTSLogger::debug("notify_tick {} data:{}", _mq_sid, data);
 			_publisher(_mq_sid, "TRD_MARKET", data.c_str(), (unsigned long)data.size());
+		}		
 		newTick->release();
 	});
 }
