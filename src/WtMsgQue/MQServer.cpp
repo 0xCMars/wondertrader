@@ -66,6 +66,8 @@ MQServer::~MQServer()
 
 bool MQServer::init(const char* url, bool confirm /* = false */)
 {
+	std::cout << "MQServer init " << url << std::endl;
+
 	if (_sock >= 0)
 		return true;
 
@@ -74,6 +76,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 	_sock = nn_socket(AF_SP, NN_PUB);
 	if(_sock < 0)
 	{
+		std::cout << "MQServer initializing failed " << _id << std::endl;
 		_mgr->log_server(_id, fmtutil::format("MQServer {} initializing failed: {}", _id, nn_strerror(nn_errno())));
 		_sock = -1;
 		return false;
@@ -82,6 +85,8 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 	int bufsize = 1024 * 1024 * 1024;
 	if(nn_setsockopt(_sock, NN_SOL_SOCKET, NN_SNDBUF, &bufsize, sizeof(bufsize)) < 0)
 	{
+		std::cout << "MQServer setsockopt failed: " << _id << std::endl;
+
 		_mgr->log_server(_id, fmtutil::format("MQServer {} setsockopt failed: {}", _id, nn_strerror(nn_errno())));
 		nn_close(_sock);
 		_sock = -1;
@@ -92,6 +97,8 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 	int ec = nn_bind(_sock, url);
 	if(ec < 0)
 	{
+		std::cout << "MQServer binding url failed " << url << std::endl;
+
 		_mgr->log_server(_id, fmtutil::format("MQServer {} binding url {} failed: {}", _id, url, nn_strerror(nn_errno())));
 		nn_close(_sock);
 		_sock = -1;
@@ -114,6 +121,8 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 
 	if(_sock < 0)
 	{
+		std::cout << "MQServer not been initialized " << _id << std::endl;
+
 		_mgr->log_server(_id, fmtutil::format("MQServer {} has not been initialized yet", _id));
 		return;
 	}
