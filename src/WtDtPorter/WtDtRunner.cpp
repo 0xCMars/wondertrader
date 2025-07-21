@@ -335,6 +335,7 @@ void WtDtRunner::on_ext_parser_quote(const char* id, WTSTickStruct* curTick, uin
 	ParserAdapterPtr adapter = _parsers.getAdapter(id);
 	if (adapter)
 	{
+		WTSLogger::warn("Parser {}", id);
 		WTSTickData* newTick = WTSTickData::create(*curTick);
 		adapter->handleQuote(newTick, uProcFlag);
 		newTick->release();

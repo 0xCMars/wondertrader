@@ -78,7 +78,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 		return false;
 	}
 
-	int bufsize = 8 * 1024 * 1024;
+	int bufsize = 1024 * 1024 * 1024;
 	if(nn_setsockopt(_sock, NN_SOL_SOCKET, NN_SNDBUF, &bufsize, sizeof(bufsize)) < 0)
 	{
 		_mgr->log_server(_id, fmtutil::format("MQServer {} setsockopt failed: {}", _id, nn_strerror(nn_errno())));

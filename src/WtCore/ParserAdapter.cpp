@@ -290,6 +290,7 @@ void ParserAdapter::handleQuote(WTSTickData *quote, uint32_t procFlag)
 		stdCode = CodeHelper::rawFlatCodeToStdCode(cInfo->getCode(), cInfo->getExchg(), cInfo->getProduct());
 	}
 	quote->setCode(stdCode.c_str());
+	WTSLogger::warn("WtCore:ParserAdapter::handleQuote handle_push_quote", );
 
 	_stub->handle_push_quote(quote);
 }
