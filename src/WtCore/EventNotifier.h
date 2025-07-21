@@ -27,6 +27,7 @@ NS_WTP_BEGIN
 class WTSTradeInfo;
 class WTSOrderInfo;
 class WTSVariant;
+class WTSTickData;
 
 class EventNotifier
 {
