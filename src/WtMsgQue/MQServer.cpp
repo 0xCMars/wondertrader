@@ -117,7 +117,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
-	std::cout << "MQServer publish " << data << std::endl;
+	std::cout << "MQServer publish " << topic << "," << dataLen << std::endl;
 
 	if(_sock < 0)
 	{
@@ -128,6 +128,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 	}
 
 	if(data == NULL || dataLen == 0 || m_bTerminated)
+		std::cout << "MQServer early return: " << dataLen << std::endl;
 		return;
 
 	{
@@ -136,6 +137,9 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
 	}
+	std::string str((const char*)data, dataLen);
+	std::cout << "MQServe data: " << str << std::endl;
+
 	// std::cout << "MQServer emplace one elem" << std::endl;
 
 	if(m_thrdCast == NULL)
@@ -185,12 +189,13 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 				std::size_t total_len = 0;
 				for (const PubData& pubData : tmpQue)
 				{
-					std::cout << "send when full" << std::endl;
 					std::size_t len = sizeof(MQPacket) + pubData._data.size();
 
 					//如果数据包缓存满了，则先发送一次
 					if (total_len + len > PACKET_BUFFER_SIZE)
 					{
+						std::cout << "send when full:" << total_len << std::endl;
+
 						_mgr->log_server(_id, fmtutil::format("Packet buffer is about to be full ({} - > {}), force to send", total_len, total_len + len));
 						int bytes_snd = 0;
 						for (;;)
