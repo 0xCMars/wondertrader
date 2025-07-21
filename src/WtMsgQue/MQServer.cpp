@@ -27,7 +27,7 @@
 
 USING_NS_WTP;
 
-constexpr static uint32_t PACKET_BUFFER_SIZE = 1 * 1024 * 1024;
+constexpr static uint32_t PACKET_BUFFER_SIZE = 1024 * 1024 * 1024;
 
 
 inline uint32_t makeMQSvrId()
@@ -136,16 +136,20 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
 	}
-	std::cout << "MQServer emplace one elem" << std::endl;
+	// std::cout << "MQServer emplace one elem" << std::endl;
 
 	if(m_thrdCast == NULL)
 	{
+		std::cout << "m_thrdCast reset" << std::endl;
+
 		m_thrdCast.reset(new StdThread([this](){
 
 			if(!m_sendBuf)
 				m_sendBuf = new char[PACKET_BUFFER_SIZE];
-
+			
 			m_uLastHBTime = TimeUtils::getLocalTimeNow();
+			std::cout << "m_thrdCast reset at " << m_uLastHBTime << std::endl;
+
 			while (!m_bTerminated)
 			{
 				int cnt = (int)nn_get_statistic(_sock, NN_STAT_CURRENT_CONNECTIONS);
@@ -176,6 +180,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 					SpinLock lock(m_mtxCast);
 					tmpQue.swap(m_dataQue);
 				}
+				std::cout << "tmpQue create" << std::endl;
 				
 				std::size_t total_len = 0;
 				for (const PubData& pubData : tmpQue)
