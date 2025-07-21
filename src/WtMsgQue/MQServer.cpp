@@ -111,7 +111,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
-	WTSLogger::debug("MQServer publish has binded to {} ", &topic);
+	WTSLogger::debug("MQServer publish has binded to {} ", topic);
 	if(_sock < 0)
 	{
 		_mgr->log_server(_id, fmtutil::format("MQServer {} has not been initialized yet", _id));
