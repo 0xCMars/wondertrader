@@ -39,7 +39,8 @@ public:
 private:
 	void	tradeToJson(const char* trader, uint32_t localid, const char* stdCode, WTSTradeInfo* trdInfo, std::string& output);
 	void	orderToJson(const char* trader, uint32_t localid, const char* stdCode, WTSOrderInfo* ordInfo, std::string& output);
-
+	void	tickToJson(const char* stdCode, WTSTickData* newTick, std::string& output);
+	
 public:
 	bool	init(WTSVariant* cfg);
 
