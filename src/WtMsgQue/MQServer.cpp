@@ -118,7 +118,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
 	std::cout << "MQServer publish " << topic << "," << dataLen << std::endl;
-
+	std::cout << "test" << std::endl;
 	if(_sock < 0)
 	{
 		std::cout << "MQServer not been initialized " << _id << std::endl;
@@ -126,6 +126,9 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		_mgr->log_server(_id, fmtutil::format("MQServer {} has not been initialized yet", _id));
 		return;
 	}
+	std::string str((const char*)data, dataLen);
+	std::cout << "MQServe data: " << str << std::endl;
+
 
 	if(data == NULL || dataLen == 0 || m_bTerminated)
 		std::cout << "MQServer early return: " << dataLen << std::endl;
@@ -137,8 +140,6 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
 	}
-	std::string str((const char*)data, dataLen);
-	std::cout << "MQServe data: " << str << std::endl;
 
 	// std::cout << "MQServer emplace one elem" << std::endl;
 
