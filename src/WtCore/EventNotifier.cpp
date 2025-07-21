@@ -434,5 +434,6 @@ void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick)
 			_publisher(_mq_sid, "TRD_MARKET", data.c_str(), (unsigned long)data.size());
 		}		
 		newTick->release();
+		WTSLogger::debug("notify_tick end.");
 	});
 }
