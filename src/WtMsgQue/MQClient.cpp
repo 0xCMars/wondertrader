@@ -120,13 +120,25 @@ void MQClient::start()
 	if (m_thrdRecv == NULL)
 	{
 		m_thrdRecv.reset(new StdThread([this]() {
+			nn_pollfd pfd;
+			pfd.fd = _sock;
+			pfd.events = NN_POLLIN;
 
 			while (!m_bTerminated)
 			{
+				int rc = nn_poll(&pfd, 1, 100);  // timeout = 100ms
+				if (rc < 0)
+				{
+					std::cerr << "nn_poll error: " << nn_strerror(nn_errno()) << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(1));
+					continue;
+				}
+
 				bool hasData = false;
+				
 				for(;;)
 				{
-					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, NN_DONTWAIT);
+					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, 0);
 					// std::cout << "nBytes receive: " << nBytes << std::endl;
 					if (nBytes < 0) {
 						int err = nn_errno();

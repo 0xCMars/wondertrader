@@ -222,7 +222,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 
 				if(total_len > 0)
 				{
-					std::cout << "send not full" << std::endl;
+					std::cout << "send not full:" << total_len << std::endl;
 
 					int bytes_snd = 0;
 					for (;;)
