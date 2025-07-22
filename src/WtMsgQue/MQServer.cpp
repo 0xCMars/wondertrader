@@ -238,14 +238,14 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 							std::cout << "Publishing error:" << nn_strerror(nn_errno()) << std::endl;
 							_mgr->log_server(_id, fmtutil::format("Publishing error: {}", nn_strerror(nn_errno())));
 						}
-
+						std::cout << "total_len:" << total_len << std::endl;
 						if (bytes_snd == total_len)
 							break;
 					}
 				}
 
 				m_uTotalSents.fetch_add(tmpQue.size());			
-
+				std::cout << "total send + 1" << std::endl;
 				if(m_dataQue.empty())
 				{
 					if(m_uTotalSents != m_uTotalPacks)
@@ -258,12 +258,13 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 						_mgr->log_server(_id, fmtutil::format("{} packets published", m_uTotalSents));
 					}
 				}
-
+				std::cout << "m_dataQue" << std::endl;
 				if (tmpQue.size() > m_maxMultiPacks)
 				{
 					m_maxMultiPacks = tmpQue.size();
 					_mgr->log_server(_id, fmtutil::format("Max Multi packs updated to {}", m_maxMultiPacks));
 				}
+				std::cout << "end" << std::endl;
 			}
 		}));
 	}
