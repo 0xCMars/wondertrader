@@ -422,7 +422,7 @@ void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick)
 {
 	if (newTick == NULL || _mq_sid == 0)
 		return;
-	WTSLogger::debug("notify_tick");
+	// WTSLogger::debug("notify_tick");
 
 	std::string strCode = stdCode;
 	newTick->retain();
