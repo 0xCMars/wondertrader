@@ -436,10 +436,10 @@ void EventNotifier::notify_tick(const char* stdCode, WTSTickData* newTick)
 		tickToJson(strCode.c_str(), newTick, data);
 		newTick->release();
 
-		// if (_publisher) {
-		WTSLogger::debug("notify_tick {} data:{}", _mq_sid, data);
-		_publisher(_mq_sid, "TRD_MARKET", data.c_str(), (unsigned long)data.size());
-		// }
-		WTSLogger::debug("notify_tick end.");
+		if (_publisher) {
+		// WTSLogger::debug("notify_tick {} data:{}", _mq_sid, data);
+			_publisher(_mq_sid, "TRD_MARKET", data.c_str(), (unsigned long)data.size());
+		}
+		// WTSLogger::debug("notify_tick end.");
 	});
 }
