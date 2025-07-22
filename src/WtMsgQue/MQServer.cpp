@@ -27,7 +27,7 @@
 
 USING_NS_WTP;
 
-constexpr static uint32_t PACKET_BUFFER_SIZE = 1024 * 1024 * 1024;
+constexpr static uint32_t PACKET_BUFFER_SIZE = 10 * 1024 * 1024;
 
 
 inline uint32_t makeMQSvrId()
@@ -140,8 +140,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
 	}
-
-	// std::cout << "MQServer emplace one elem" << std::endl;
+	std::cout << "MQServer emplace one elem" << std::endl;
 
 	if(m_thrdCast == NULL)
 	{
@@ -274,4 +273,6 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 			}
 		}));
 	}
+	std::cout << "MQServer::publish end." << std::endl;
+
 }
