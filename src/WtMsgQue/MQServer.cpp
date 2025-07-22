@@ -199,7 +199,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 							}
 							else
 							{
-								std::cout << "Publishing error:" << std::endl;
+								std::cout << "Publishing error:" << nn_strerror(nn_errno()) << std::endl;
 								_mgr->log_server(_id, fmtutil::format("Publishing error: {}", nn_strerror(nn_errno())));
 							}
 
@@ -235,6 +235,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 						}
 						else
 						{
+							std::cout << "Publishing error:" << nn_strerror(nn_errno()) << std::endl;
 							_mgr->log_server(_id, fmtutil::format("Publishing error: {}", nn_strerror(nn_errno())));
 						}
 
