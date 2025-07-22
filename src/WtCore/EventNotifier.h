@@ -10,6 +10,7 @@
 #pragma once
 
 #include <boost/asio/io_service.hpp>
+#include <boost/asio/executor_work_guard.hpp>
 
 #include "../Includes/WTSMarcos.h"
 #include "../Includes/WTSObject.hpp"
@@ -69,6 +70,7 @@ private:
 	bool			_stopped;
 	boost::asio::io_service		_asyncio;
 	StdThreadPtr				_worker;
+	boost::asio::executor_work_guard<boost::asio::io_service::executor_type> _work_guard;
 };
 
 NS_WTP_END

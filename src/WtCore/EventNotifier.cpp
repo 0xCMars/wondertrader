@@ -95,12 +95,15 @@ bool EventNotifier::init(WTSVariant* cfg)
 
 	if (_worker == NULL)
 	{
-		boost::asio::io_service::work work(_asyncio);
+		// boost::asio::io_service::work work(_asyncio);
+		_work_guard = boost::asio::make_work_guard(_asyncio);
 		_worker.reset(new StdThread([this]() {
 			while (!_stopped)
 			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(2));
 				_asyncio.run_one();
+            	std::this_thread::sleep_for(std::chrono::milliseconds(2));
+				// std::this_thread::sleep_for(std::chrono::milliseconds(2));
+				// _asyncio.run_one();
 				//m_asyncIO.run();
 			}
 		}));
