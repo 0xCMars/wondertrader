@@ -126,8 +126,8 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		_mgr->log_server(_id, fmtutil::format("MQServer {} has not been initialized yet", _id));
 		return;
 	}
-	std::string str((const char*)data, dataLen);
-	std::cout << "MQServe data: " << str << std::endl;
+	// std::string str((const char*)data, dataLen);
+	// std::cout << "MQServe data: " << str << std::endl;
 
 
 	if(data == NULL || dataLen == 0 || m_bTerminated)
