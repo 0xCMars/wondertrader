@@ -126,6 +126,8 @@ void MQClient::start()
 				for(;;)
 				{
 					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, NN_DONTWAIT);
+					_cb_message(_id, "nn_recv", "", 0);
+
 					if (nBytes > 0)
 					{
 						m_iCheckTime = TimeUtils::getLocalTimeNow();
