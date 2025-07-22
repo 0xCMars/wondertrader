@@ -36,6 +36,7 @@ EventNotifier::EventNotifier()
 	: _mq_sid(0)
 	, _publisher(NULL)
 	, _stopped(false)
+	, _work_guard(boost::asio::make_work_guard(_asyncio))
 {
 	
 }
@@ -96,7 +97,7 @@ bool EventNotifier::init(WTSVariant* cfg)
 	if (_worker == NULL)
 	{
 		// boost::asio::io_service::work work(_asyncio);
-		_work_guard = boost::asio::make_work_guard(_asyncio);
+		// _work_guard = boost::asio::make_work_guard(_asyncio);
 		_worker.reset(new StdThread([this]() {
 			while (!_stopped)
 			{
