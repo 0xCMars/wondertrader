@@ -127,8 +127,15 @@ void MQClient::start()
 				for(;;)
 				{
 					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, NN_DONTWAIT);
-					std::cout << "nBytes receive: " << nBytes << std::endl;
-
+					// std::cout << "nBytes receive: " << nBytes << std::endl;
+					if (nBytes < 0) {
+						int err = nn_errno();
+						if (err == EAGAIN) {
+							// 没有数据可读（正常）
+						} else {
+							std::cerr << "recv error: " << nn_strerror(err) << std::endl;
+						}
+					}
 					if (nBytes > 0)
 					{
 						_cb_message(_id, "nn_recv-test", "", 0);
