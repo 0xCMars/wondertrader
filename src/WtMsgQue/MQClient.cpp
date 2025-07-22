@@ -26,7 +26,7 @@ USING_NS_WTP;
 
 #pragma warning(disable:4200)
 
-#define  RECV_BUF_SIZE  10*1024*1024
+#define  RECV_BUF_SIZE  1024*1024
 
 inline uint32_t makeMQCientId()
 {
