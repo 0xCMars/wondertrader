@@ -258,7 +258,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 						_mgr->log_server(_id, fmtutil::format("{} packets published", m_uTotalSents));
 					}
 				}
-				std::cout << "m_dataQue" << std::endl;
+				std::cout << "m_dataQue + 1" << std::endl;
 				if (tmpQue.size() > m_maxMultiPacks)
 				{
 					m_maxMultiPacks = tmpQue.size();

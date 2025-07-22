@@ -61,7 +61,7 @@ void WtCtaRtTicker::trigger_price(WTSTickData* curTick)
 
 void WtCtaRtTicker::on_tick(WTSTickData* curTick)
 {
-	WTSLogger::debug("WtCore WtCtaRtTicker::on_tick");
+	// WTSLogger::debug("WtCore WtCtaRtTicker::on_tick");
 	if (_thrd == NULL)
 	{
 		trigger_price(curTick);

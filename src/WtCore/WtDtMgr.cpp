@@ -238,10 +238,10 @@ void WtDtMgr::handle_push_quote(const char* stdCode, WTSTickData* newTick)
 
 	_rt_tick_map->add(stdCode, newTick, true);
 	// WTSLogger::debug("try to send notifier");
-	if (_notifier != NULL) {
-		WTSLogger::debug("try to send notifier - 2");
-		_notifier->notify_tick(stdCode, newTick);
-	}
+	// if (_notifier != NULL) {
+	// 	WTSLogger::debug("try to send notifier - 2");
+	// 	_notifier->notify_tick(stdCode, newTick);
+	// }
 
 	if(_ticks_adjusted != NULL)
 	{
