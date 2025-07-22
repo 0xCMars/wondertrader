@@ -128,7 +128,7 @@ void MQClient::start()
 					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, NN_DONTWAIT);
 					if (nBytes > 0)
 					{
-						_cb_message(_id, "nn_recv", "", 0);
+						_cb_message(_id, "nn_recv-test", "", 0);
 						m_iCheckTime = TimeUtils::getLocalTimeNow();
 						m_bNeedCheck = true;
 						hasData = true;
