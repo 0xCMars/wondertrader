@@ -132,7 +132,7 @@ bool ParserUDP::reconnect(uint32_t flag /* = 3 */)
 		_b_socket->open(_broad_ep.protocol());
 		_b_socket->set_option(ip::udp::socket::reuse_address(true));
 		_b_socket->set_option(ip::udp::socket::broadcast(true));
-		_b_socket->set_option(ip::udp::socket::receive_buffer_size(8 * 1024 * 1024));
+		_b_socket->set_option(ip::udp::socket::receive_buffer_size(10 * 1024 * 1024));
 		_b_socket->bind(_broad_ep);
 
 		_b_socket->async_receive_from(buffer(_b_buffer), _broad_ep,

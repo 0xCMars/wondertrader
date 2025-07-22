@@ -133,7 +133,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 	if(data == NULL || dataLen == 0 || m_bTerminated)
 		std::cout << "MQServer early return: " << dataLen << std::endl;
 		return;
-
+	std::cout << "before lock" << std::endl;
 	{
 		std::cout << "m_mtxCast PubData" << std::endl;
 		SpinLock lock(m_mtxCast);
@@ -142,7 +142,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uTotalPacks.fetch_add(1);
 		std::cout << "m_mtxCast PubData end." << std::endl;
 	}
-	std::cout << "MQServer emplace one elem" << std::endl;
+	std::cout << "After lock" << std::endl;
 
 	if(m_thrdCast == NULL)
 	{
