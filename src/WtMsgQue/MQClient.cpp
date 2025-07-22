@@ -136,19 +136,14 @@ void MQClient::start()
 
 				bool hasData = false;
 				
-				for(;;)
+				if (rc > 0 && (pfd.revents & NN_POLLIN))
 				{
-					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, 0);
-					// std::cout << "nBytes receive: " << nBytes << std::endl;
-					if (nBytes < 0) {
-						int err = nn_errno();
-						if (err == EAGAIN) {
-							// 没有数据可读（正常）
-						} else {
-							std::cerr << "recv error: " << nn_strerror(err) << std::endl;
-						}
+					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, 0);  // 阻塞读取
+					if (nBytes < 0)
+					{
+						std::cerr << "recv error: " << nn_strerror(nn_errno()) << std::endl;
 					}
-					if (nBytes > 0)
+					else if (nBytes > 0)
 					{
 						_cb_message(_id, "nn_recv-test", "", 0);
 						m_iCheckTime = TimeUtils::getLocalTimeNow();
@@ -156,10 +151,6 @@ void MQClient::start()
 						hasData = true;
 						_buffer.append(_recv_buf, nBytes);
 						_cb_message(_id, "_buffer add message", "", 0);
-					}
-					else
-					{
-						break;
 					}
 				}
 
