@@ -82,7 +82,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 		return false;
 	}
 
-	int bufsize = 1024 * 1024 * 1024;
+	int bufsize = 10 * 1024 * 1024;
 	if(nn_setsockopt(_sock, NN_SOL_SOCKET, NN_SNDBUF, &bufsize, sizeof(bufsize)) < 0)
 	{
 		std::cout << "MQServer setsockopt failed: " << _id << std::endl;
@@ -118,7 +118,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
 	std::cout << "MQServer publish " << topic << "," << dataLen << std::endl;
-	std::cout << "test" << std::endl;
+	std::cout << "test - 2" << std::endl;
 	if(_sock < 0)
 	{
 		std::cout << "MQServer not been initialized " << _id << std::endl;
