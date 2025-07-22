@@ -82,7 +82,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 		return false;
 	}
 
-	int bufsize = 1024 * 1024 * 1024;
+	int bufsize = 1 * 1024 * 1024;
 	if(nn_setsockopt(_sock, NN_SOL_SOCKET, NN_SNDBUF, &bufsize, sizeof(bufsize)) < 0)
 	{
 		std::cout << "MQServer setsockopt failed: " << _id << std::endl;
@@ -180,16 +180,18 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 				std::size_t total_len = 0;
 				for (const PubData& pubData : tmpQue)
 				{
-					std::cout << "send when full" << std::endl;
+					std::cout << "send data" << std::endl;
 					std::size_t len = sizeof(MQPacket) + pubData._data.size();
 
 					//如果数据包缓存满了，则先发送一次
 					if (total_len + len > PACKET_BUFFER_SIZE)
 					{
+						std::cout << "send when full" << std::endl;
 						_mgr->log_server(_id, fmtutil::format("Packet buffer is about to be full ({} - > {}), force to send", total_len, total_len + len));
 						int bytes_snd = 0;
 						for (;;)
 						{
+							std::cout << "send nn_send" << std::endl;
 							int bytes = nn_send(_sock, m_sendBuf + bytes_snd, total_len - bytes_snd, 0);
 							if (bytes >= 0)
 							{
@@ -197,6 +199,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 							}
 							else
 							{
+								std::cout << "Publishing error:" << std::endl;
 								_mgr->log_server(_id, fmtutil::format("Publishing error: {}", nn_strerror(nn_errno())));
 							}
 
