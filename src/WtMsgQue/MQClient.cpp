@@ -196,6 +196,8 @@ void MQClient::start()
 
 void MQClient::extract_buffer()
 {
+	std::cout << "MQClient::extract_buffer" << std::endl;
+
 	uint32_t proc_len = 0;
 	for(;;)
 	{
@@ -204,18 +206,25 @@ void MQClient::extract_buffer()
 			break;
 
 		MQPacket* packet = (MQPacket*)(_buffer.data() + proc_len);
+		
+		std::cout << "packet 1 " << std::endl;
 
 		if (_buffer.length() - proc_len < sizeof(MQPacket) + packet->_length)
 			break;
 
 		char* data = packet->_data;
+		std::cout << "packet 2" << std::endl;
 
-		if (is_allowed(packet->_topic))
+		if (is_allowed(packet->_topic)) {
+			std::cout << "is_allowed " << std::endl;
 			_cb_message(_id, packet->_topic, packet->_data, packet->_length);
+		}
 
 		proc_len += sizeof(MQPacket) + packet->_length;
 	}
 
-	if(proc_len > 0)
+	if(proc_len > 0) {
+		std::cout << "is_allowed " << std::endl;
 		_buffer.erase(0, proc_len);
+	}
 }
