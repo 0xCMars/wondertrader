@@ -413,9 +413,12 @@ void WtCtaEngine::on_schedule(uint32_t curDate, uint32_t curTime)
 
 
 void WtCtaEngine::handle_push_quote(WTSTickData* newTick)
-{
-	if (_tm_ticker)
+{	
+	WTSLogger::debug("WtCore WtCtaEngine::handle_push_quote");
+	if (_tm_ticker) {
+		WTSLogger::debug("WtCore send tm ticker");
 		_tm_ticker->on_tick(newTick);
+	}
 }
 
 void WtCtaEngine::handle_pos_change(const char* straName, const char* stdCode, double diffPos)
