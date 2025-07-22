@@ -135,10 +135,12 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		return;
 
 	{
+		std::cout << "m_mtxCast PubData" << std::endl;
 		SpinLock lock(m_mtxCast);
 		m_dataQue.emplace_back(PubData(topic, data, dataLen));
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
+		std::cout << "m_mtxCast PubData end." << std::endl;
 	}
 	std::cout << "MQServer emplace one elem" << std::endl;
 
@@ -167,11 +169,15 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 					if (now - m_uLastHBTime > 60*1000 && cnt>0)
 					{
 						//等待超时以后，广播心跳包
+						std::cout << "m_mtxCast HEARTBEAT" << std::endl;
+
 						SpinLock lock(m_mtxCast);
 						m_dataQue.emplace_back(PubData("HEARTBEAT", "", 0));
 						m_uTotalPacks.fetch_add(1);
 						m_uLastHBTime = now;
 						_mgr->log_server(_id, fmtutil::format("HeartBeat timestamp updated to {}", m_uLastHBTime));
+						std::cout << "m_mtxCast HEARTBEAT end." << std::endl;
+
 					}
 					else
 					{
@@ -181,7 +187,9 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 
 				PubDataQue tmpQue;
 				{
+					std::cout << "m_mtxCast tmpQue" << std::endl;
 					SpinLock lock(m_mtxCast);
+					std::cout << "m_mtxCast tmpQue end" << std::endl;
 					tmpQue.swap(m_dataQue);
 				}
 				std::cout << "tmpQue create" << std::endl;
