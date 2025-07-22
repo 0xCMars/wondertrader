@@ -417,8 +417,8 @@ void WtCtaEngine::handle_push_quote(WTSTickData* newTick)
 	WTSLogger::debug("WtCore WtCtaEngine::handle_push_quote");
 	if (_notifier) {
 		WTSLogger::debug("WtCore WtCtaEngine::send to notifier");
-		std::string stdCode = newTick->code();
-		_notifier->notify_tick(stdCode.c_str(), newTick);
+		// std::string stdCode = newTick->code();
+		// _notifier->notify_tick(stdCode.c_str(), newTick);
 	}
 	if (_tm_ticker) {
 		// WTSLogger::debug("WtCore send tm ticker");
