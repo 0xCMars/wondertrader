@@ -67,7 +67,7 @@ private:
 	FuncMQCallback	_cb_message;
 
 	wt_hashset<std::string> _topics;
-	char			_recv_buf[1024 * 1024];
+	char			_recv_buf[10*1024*1024];
 };
 
 NS_WTP_END
