@@ -17,7 +17,6 @@
 #include <atomic>
 #include <iostream>
 
-
 #ifndef NN_STATIC_LIB
 #define NN_STATIC_LIB
 #endif

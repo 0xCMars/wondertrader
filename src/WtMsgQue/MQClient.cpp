@@ -13,6 +13,7 @@
 #include "../Share/fmtlib.h"
 #include "../Share/TimeUtils.hpp"
 #include <atomic>
+#include <iostream>
 
 #ifndef NN_STATIC_LIB
 #define NN_STATIC_LIB
@@ -126,6 +127,8 @@ void MQClient::start()
 				for(;;)
 				{
 					int nBytes = nn_recv(_sock, _recv_buf, RECV_BUF_SIZE, NN_DONTWAIT);
+					std::cout << "nBytes receive: " << nBytes << std::endl;
+
 					if (nBytes > 0)
 					{
 						_cb_message(_id, "nn_recv-test", "", 0);
