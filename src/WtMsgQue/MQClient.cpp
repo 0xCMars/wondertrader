@@ -25,7 +25,7 @@ USING_NS_WTP;
 
 #pragma warning(disable:4200)
 
-#define  RECV_BUF_SIZE  1024*1024
+#define  RECV_BUF_SIZE  10*1024*1024
 
 inline uint32_t makeMQCientId()
 {
@@ -132,6 +132,7 @@ void MQClient::start()
 						m_bNeedCheck = true;
 						hasData = true;
 						_buffer.append(_recv_buf, nBytes);
+						_cb_message(_id, "_buffer add message", "", 0);
 					}
 					else
 					{
