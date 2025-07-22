@@ -118,7 +118,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
 	std::cout << "MQServer publish " << topic << "," << dataLen << std::endl;
-	std::cout << "test - 2" << std::endl;
+	std::cout << "test - xxx" << std::endl;
 	if(_sock < 0)
 	{
 		std::cout << "MQServer not been initialized " << _id << std::endl;
@@ -128,7 +128,6 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 	}
 	// std::string str((const char*)data, dataLen);
 	// std::cout << "MQServe data: " << str << std::endl;
-
 
 	if(data == NULL || dataLen == 0 || m_bTerminated)
 		std::cout << "MQServer early return: " << dataLen << std::endl;
