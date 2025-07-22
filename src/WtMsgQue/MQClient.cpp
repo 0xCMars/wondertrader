@@ -145,12 +145,12 @@ void MQClient::start()
 					}
 					else if (nBytes > 0)
 					{
-						std::cout << "nn_recv-test" << std::endl;
+						// std::cout << "nn_recv-test" << std::endl;
 						m_iCheckTime = TimeUtils::getLocalTimeNow();
 						m_bNeedCheck = true;
 						hasData = true;
 						_buffer.append(_recv_buf, nBytes);
-						std::cout << "_buffer add message" << std::endl;
+						// std::cout << "_buffer add message" << std::endl;
 					}
 				}
 
@@ -187,7 +187,7 @@ void MQClient::start()
 
 void MQClient::extract_buffer()
 {
-	std::cout << "MQClient::extract_buffer" << std::endl;
+	// std::cout << "MQClient::extract_buffer" << std::endl;
 
 	uint32_t proc_len = 0;
 	for(;;)
@@ -196,20 +196,20 @@ void MQClient::extract_buffer()
 		if (_buffer.length() - proc_len < sizeof(MQPacket))
 			break;
 		
-		std::cout << "_buffer.data:" << _buffer.data() << std::endl;
+		// std::cout << "_buffer.data:" << _buffer.data() << std::endl;
 
 		MQPacket* packet = (MQPacket*)(_buffer.data() + proc_len);
 		
-		std::cout << "packet 1 " << std::endl;
+		// std::cout << "packet 1 " << std::endl;
 
 		if (_buffer.length() - proc_len < sizeof(MQPacket) + packet->_length)
 			break;
 
 		char* data = packet->_data;
-		std::cout << "packet 2" << std::endl;
+		// std::cout << "packet 2" << std::endl;
 
 		if (is_allowed(packet->_topic)) {
-			std::cout << "is_allowed " << std::endl;
+			// std::cout << "is_allowed " << std::endl;
 			_cb_message(_id, packet->_topic, packet->_data, packet->_length);
 		}
 
@@ -217,7 +217,7 @@ void MQClient::extract_buffer()
 	}
 
 	if(proc_len > 0) {
-		std::cout << "proc_len: "<< proc_len << std::endl;
+		// std::cout << "proc_len: "<< proc_len << std::endl;
 		_buffer.erase(0, proc_len);
 	}
 }

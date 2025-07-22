@@ -315,7 +315,8 @@ void EventNotifier::tickToJson(const char* stdCode, WTSTickData* newTick, std::s
 		rj::Document root(rj::kObjectType);
 		rj::Document::AllocatorType &allocator = root.GetAllocator();
 
-		root.AddMember("time", newTick->actiontime(), allocator);
+		root.AddMember("date", newTick->tradingdate(), allocator);
+		root.AddMember("actiontime", newTick->actiontime(), allocator);
 		root.AddMember("code", rj::Value(stdCode, allocator), allocator);
 		root.AddMember("price", newTick->price(), allocator);
 

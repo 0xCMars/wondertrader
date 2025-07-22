@@ -116,7 +116,7 @@ bool MQServer::init(const char* url, bool confirm /* = false */)
 
 void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 {
-	std::cout << "MQServer publish " << topic << std::endl;
+	// std::cout << "MQServer publish " << topic << std::endl;
 
 	if(_sock < 0)
 	{
@@ -179,18 +179,18 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 				std::size_t total_len = 0;
 				for (const PubData& pubData : tmpQue)
 				{
-					std::cout << "send data" << std::endl;
+					// std::cout << "send data" << std::endl;
 					std::size_t len = sizeof(MQPacket) + pubData._data.size();
 
 					//如果数据包缓存满了，则先发送一次
 					if (total_len + len > PACKET_BUFFER_SIZE)
 					{
-						std::cout << "send when full" << std::endl;
+						// std::cout << "send when full" << std::endl;
 						_mgr->log_server(_id, fmtutil::format("Packet buffer is about to be full ({} - > {}), force to send", total_len, total_len + len));
 						int bytes_snd = 0;
 						for (;;)
 						{
-							std::cout << "send nn_send" << std::endl;
+							// std::cout << "send nn_send" << std::endl;
 							int bytes = nn_send(_sock, m_sendBuf + bytes_snd, total_len - bytes_snd, 0);
 							if (bytes >= 0)
 							{
@@ -222,7 +222,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 
 				if(total_len > 0)
 				{
-					std::cout << "send not full:" << total_len << std::endl;
+					// std::cout << "send not full:" << total_len << std::endl;
 
 					int bytes_snd = 0;
 					for (;;)
@@ -244,7 +244,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 				}
 
 				m_uTotalSents.fetch_add(tmpQue.size());			
-				std::cout << "total send + 1" << std::endl;
+				// std::cout << "total send + 1" << std::endl;
 				if(m_dataQue.empty())
 				{
 					if(m_uTotalSents != m_uTotalPacks)
@@ -257,13 +257,13 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 						_mgr->log_server(_id, fmtutil::format("{} packets published", m_uTotalSents));
 					}
 				}
-				std::cout << "m_dataQue + 1" << std::endl;
+				// std::cout << "m_dataQue + 1" << std::endl;
 				if (tmpQue.size() > m_maxMultiPacks)
 				{
 					m_maxMultiPacks = tmpQue.size();
 					_mgr->log_server(_id, fmtutil::format("Max Multi packs updated to {}", m_maxMultiPacks));
 				}
-				std::cout << "end" << std::endl;
+				// std::cout << "end" << std::endl;
 			}
 		}));
 	}
