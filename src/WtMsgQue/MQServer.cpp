@@ -135,7 +135,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 		m_uLastHBTime = TimeUtils::getLocalTimeNow();
 		m_uTotalPacks.fetch_add(1);
 	}
-	std::cout << "MQServer emplace one elem" << std::endl;
+	// std::cout << "MQServer emplace one elem" << std::endl;
 
 	if(m_thrdCast == NULL)
 	{
@@ -237,7 +237,7 @@ void MQServer::publish(const char* topic, const void* data, uint32_t dataLen)
 							std::cout << "Publishing error:" << nn_strerror(nn_errno()) << std::endl;
 							_mgr->log_server(_id, fmtutil::format("Publishing error: {}", nn_strerror(nn_errno())));
 						}
-						std::cout << "total_len:" << total_len << std::endl;
+						// std::cout << "total_len:" << total_len << std::endl;
 						if (bytes_snd == total_len)
 							break;
 					}
